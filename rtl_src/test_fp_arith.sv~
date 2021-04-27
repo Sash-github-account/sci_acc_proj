@@ -1,0 +1,36 @@
+module test_fp_arith; 
+`include "param.vh"
+  reg [DATA_WIDTH-1:0]      data_1;
+  reg [DATA_WIDTH-1:0]      data_2;
+		 reg 			     op_sel;
+  wire  [DATA_WIDTH-1:0] data_o;
+
+   
+   initial
+     begin
+       $dumpfile("dump.vcd"); $dumpvars;
+	$display($time, " << Starting the Simulation >>");
+       op_sel = 0;
+       data_1 = 32'h3c54fdf4;
+       data_2 = 32'h3ccccccd;
+       #10;
+       op_sel = 1;
+       #10;
+       $finish;
+       
+     end
+  
+  initial  begin      $monitor(" data_1=%x,data_2=%x,data_o=%x \n",data_1, data_2, data_o ); end
+
+
+fp_arith dut(
+  .data_1(data_1),
+  .data_2(data_2),
+  .op_sel(op_sel),
+  .data_o(data_o)
+		 );
+
+		    
+   
+endmodule // test
+

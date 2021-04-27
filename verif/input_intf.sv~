@@ -1,0 +1,33 @@
+`include "param.v"
+
+
+
+interface sci_acc_intf (input clk);
+
+
+
+   // logic Declarations //
+   logic 			pkt_valid;
+   logic [DATA_WIDTH-1:0] 	op_pkt__data;
+   logic [NUM_MODES-1:0] 	op_pkt__mode;
+   logic [RES_WIDTH-1:0] 	op_pkt__res; 
+
+   logic 			pkt_dropd;
+   logic 			ready;
+   logic [DATA_WIDTH-1:0] 	data_out;
+   logic 			done;
+   //_____________//
+
+   
+
+   // Clocking Block Definition //
+   clocking cb @ (posedge clk);
+      default input #1step output #1ns;
+      input 			pkt_valid, op_pkt__data, op_pkt__mode, op_pkt__res; 
+      output 			pkt_dropd, ready, data_out, done;    
+   endclocking // cb
+   //_____________//
+
+
+   
+endinterface // sci_acc_intf

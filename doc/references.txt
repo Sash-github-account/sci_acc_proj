@@ -1,0 +1,14 @@
+1. https://en.wikipedia.org/wiki/Single-precision_floating-point_format  :- Single precision floating point format reference
+2. https://www.chipverify.com/  :- System Verilog and UVM reference
+3. https://stackoverflow.com/questions/11930963/variable-shift-register-in-verilog :- Info about shift operation usage
+4. https://www.ece.lsu.edu/ee3755/2002/l07.html :- combinational Multiplier reference
+5. https://www.doc.ic.ac.uk/~eedwards/compsys/float/ :- Floating point multiplication reference
+5. https://www.exploringbinary.com/floating-point-converter/ :- Tool for calculating coefficients
+6. https://en.wikipedia.org/wiki/Moore_machine :- Moore state machine reference
+7. https://stackoverflow.com/questions/34239645/adding-header-files-in-verilog :- reference for including hearding files in verilog
+8. http://www.mrc.uidaho.edu/mrc/people/jff/EO_440/Handouts/SystemVerilog%20and%20Modeling/Testbenches/Lattice-TestbenchPrimer.pdf :- Verilog testbench reference
+9. https://verificationguide.com/systemverilog/systemverilog-semaphore/ :- SV UVM semaphores
+10. https://www.h-schmidt.net/FloatConverter/IEEE754.html :- another single precision floating point converter
+11. https://www.youtube.com/watch?v=mKJiD2ZAlwM :- Video on single precision floatng point addition
+12. https://www.chipverify.com/verilog/verilog-generate-block :- Verilog generate syntax
+13. https://www.binaryhexconverter.com/hex-to-decimal-converter :- Hex to decimal converter

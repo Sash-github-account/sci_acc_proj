@@ -1,0 +1,44 @@
+// Top level testbench module to instantiate design, interface
+// start clocks and run the test
+module tb;
+   reg clk;
+
+   always #10 clk =~ clk;
+   input_intf 	i_if (clk);
+   output_intf 	o_if (clk);
+   rst_intf 	rst_if (clk);
+
+   sci_acc_top(
+	       .clk(clk),
+	       .rst_n(rst_if.rst_n),
+	       .pkt_valid(i_if.pkt_valid), 
+	       .op_pkt__data(i_if.op_pkt__data),
+	       .op_pkt__mode(i_if.op_pkt__mode),
+	       .op_pkt__res(i_if.op_pkt__res), 
+
+	       .pkt_dropd(o_if.pkt_dropd),
+	       .ready(i_if.ready),
+	       .data_out(o_if.data_out),
+	       .done(o_if.done)
+	       );
+   sci_acc_test t0;
+   
+   initial begin
+      
+      t0 = new;
+      t0.i_if  = i_if;
+      t0.o_if  = o_if;
+      t0.rst_if= rst_if;
+      t0.run();
+
+      // Because multiple components and clock are running
+      // in the background, we need to call $finish explicitly
+      #50 $finish;
+   end
+
+   // System tasks to dump VCD waveform file
+   initial begin
+      $dumpvars;
+      $dumpfile ("dump.vcd");
+   end
+endmodule

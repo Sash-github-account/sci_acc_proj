@@ -1,0 +1,40 @@
+1. e^x algo:
+     An example of sequence of events to compute e^x with res = 5
+
+     State OUTPUTs:
+     IDLE: stg1_en = 0; stg2_en =0; start_cnt = 0; rd = 0; op = ADD; done = 0
+     START_EXP/MODE_DETECT: stg1_en = 1; stg2_en = 0; start_cnt = 1; rd = 1; op = ADD; done = 0
+     RUN_EXP: stg1_en = 1; stg2_en = 1; start_cnt = 0; rd = 1; op = ADD; done = 0
+     DONE: stg1_en = 0; stg2_en = 0; start_cnt = 0; rd = 0; op = ADD; done = 1
+
+     Sequence:
+     init: stg1_in = 1; stg1_out = 1; stg2_in = 1; stg2_out = 1; cntr = 0
+           fsm cur_state: IDLE; nxt_state: IDLE
+     
+     --> pkt_valid = 1; stg1_in = 1*x; stg1_out = 1; stg2_in = 1; stg2_out = 1; cntr = 0
+         fsm cur_state: IDLE; nxt_state: START_EXP; 
+     
+     Cycle 1: stg1_in = 1*x; stg_out = 1;  stg2_in = 1/0!*1 + 1; stg2_out = 1; cntr = 0
+              fsm cur_state: START_EXP; nxt_state: RUN_EXP
+
+     Cycle 2: stg1_in = x*x; stg_out = x; stg2_in = 1/1!*x + 1; stg2_out = 1; cntr = 1
+              fsm cur_state: RUN_EXP; nxt_state: RUN_EXP
+
+     Cycle 3: stg1_in = x2*x; stg_out = x2; stg2_in = 1/2!*x2 + (1/1!*x + 1); stg2_out = 1/1!*x + 1; cntr = 2
+              fsm cur_state: RUN_EXP; nxt_state: RUN_EXP
+
+     Cycle 4: stg1_in = x3*x; stg_out = x3; stg2_in = 1/3!*x3 + (1/2!*x2) + (1/1!*x + 1); stg2_out = (1/2!*x2) + (1/1!*x + 1); cntr = 3
+              fsm cur_state: RUN_EXP; nxt_state: RUN_EXP
+
+     Cycle 5: stg1_in = x4*x; stg_out = x4; stg2_in = 1/4!*x4 + (1/3!*x3) + (1/2!*x2) + (1/1!*x + 1); stg2_out = (1/3!*x3) + (1/2!*x2) + (1/1!*x + 1); cntr = 4
+              fsm cur_state: RUN_EXP; nxt_state: DONE
+
+     Cycle 6: stg1_in = x5*x; stg_out = x5; stg2_in = 1/5!*x5 + (1/4!*x4) + (1/3!*x3) + (1/2!*x2) + (1/1!*x + 1); stg2_out =  (1/4!*x4) + (1/3!*x3) + (1/2!*x2) + (1/1!*x + 1); cntr = 5
+              fsm cur_state: DONE; nxt_state: IDLE
+    
+
+
+2. sin(x) algo:
+        An example of sequence of events to compute sin(x) with res = 5
+
+	State OUTPUTs:
