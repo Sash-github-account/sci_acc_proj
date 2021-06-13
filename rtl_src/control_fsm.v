@@ -52,14 +52,13 @@ module control_fsm (
 
 
    // State Outputs //
-   always@(posedge clk or negedge rst_n) begin
+   always@(posedge clk ) begin
       if(rst_n) begin
-	 rd_coeff      = 0;
-	 done    = 0;
-	 stg1_en = 0;
-	 stg2_en = 0;
-	 cur_state = IDLE;	 
-	 nxt_state = IDLE;	 
+	 rd_coeff      <= 0;
+	 done    <= 0;
+	 stg1_en <= 0;
+	 stg2_en <= 0;
+	 cur_state <= IDLE;	 
       end
       else begin
 	 cur_state <= nxt_state;
@@ -96,6 +95,7 @@ module control_fsm (
 
    // State transitions //
    always@(*) begin
+     nxt_state = IDLE;
       case(cur_state)
 	IDLE: begin
 	   if(op_pkt_available) nxt_state = READ_FIFO;

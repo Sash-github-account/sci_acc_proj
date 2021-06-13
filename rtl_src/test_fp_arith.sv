@@ -3,6 +3,7 @@ module test_fp_arith;
    reg [DATA_WIDTH-1:0]      data_1;
    reg [DATA_WIDTH-1:0]      data_2;
    reg 			     op_sel;
+   reg 			     en;
    wire [DATA_WIDTH-1:0]     data_o;
 
    
@@ -11,13 +12,17 @@ module test_fp_arith;
 	$dumpfile("dump.vcd"); $dumpvars;
 	$display($time, " << Starting the Simulation >>");
 
+       en = 1;
 	// Addition testing begin //
+       // data2[22:0]: 000_0000_0000_0000_0000_0000; exp2:0011_1111_1
+       // data1[22:0]: 000_0000_0000_0000_0000_0000; exp1:0011_1111_0
+       // to make exps equal: add 2 0011_1111_1110
 	$display( " << Starting Addition tesing \n >>");
 	op_sel = 0;
 	// test both +ve
 	$display( " << Adding two positive numbers \n >>");
-	data_1 = 32'h3c54fdf4;
-	data_2 = 32'h3ccccccd;
+	data_2 = 32'h3f800000;
+	data_1 = 32'h3f000000;
 	#10;
        	// test data_1 +ve and data_2 -ve
        $display( " << data_1 +ve \n >>");
@@ -70,6 +75,7 @@ module test_fp_arith;
 		.data_1(data_1),
 		.data_2(data_2),
 		.op_sel(op_sel),
+     .en(en),
 		.data_o(data_o)
 		);
 

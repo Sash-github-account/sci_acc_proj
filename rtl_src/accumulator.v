@@ -19,7 +19,7 @@ module accumulator (
 
 
    // Accumulator sequential logic //
-   always@(posedge clk or negedge rst_n) begin
+  always@(posedge clk) begin
      if(rst_n) begin
 	 accum_data_out <= ACCUM_INIT;
       end

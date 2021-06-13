@@ -10,9 +10,11 @@ class op_pkt extends uvm_sequence_item;
    rand bit [NUM_MODES-1:0]  mode;   
    rand bit [RES_WIDTH-1:0]  res;
 
-   // Constraints for resolution and mode //
+   // Constraints for resolution and mode //0x3f800000,0x3dcccccd,0x3c23d70a
+                                          //0x402df854,0x3f8d763e,0x3f814953
+  constraint c_data { data inside {'h3f800000};}
    constraint c_res { res inside {[5:15]}; }
-  constraint c_mode { mode inside {[1:2]}; }
+  constraint c_mode { mode inside {[1:1]}; }
 
    
    // Use utility macros to implement standard functions

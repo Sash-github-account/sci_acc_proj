@@ -32,13 +32,13 @@ module op_pkt_chk(
    assign res_int = pkt_i[(DATA_WIDTH + RES_WIDTH + NUM_MODES)-1:(DATA_WIDTH + NUM_MODES)];
    assign mode_int = pkt_i[(DATA_WIDTH + NUM_MODES)-1:DATA_WIDTH];
    assign is_mode_onehot = (^mode_int) & ~(&mode_int);
-   assign is_res_greater_than_5 = (res_int > 4'h5);
+  assign is_res_greater_than_5 = (res_int > 4'h5);
    //______________//
    
    
    
    // Checker output generation logic //
-   always@(posedge clk or negedge rst_n) begin
+   always@(posedge clk ) begin
       if(rst_n) begin
 	 pkt_good <= 0;
 	 pkt_dropd <= 0;

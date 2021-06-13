@@ -66,4 +66,3 @@ class rand_test extends sci_acc_base_test;
       seq.randomize();
   endfunction
 endclass
-

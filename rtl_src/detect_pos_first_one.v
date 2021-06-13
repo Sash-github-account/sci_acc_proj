@@ -1,5 +1,5 @@
 module detect_pos_first_one 
-  #(parameter int D_WIDTH = 16)
+  #(parameter D_WIDTH = 16)
    (
     input [D_WIDTH-1:0] 	     data_i,
     output reg [$clog2(D_WIDTH)-1:0] pos_o

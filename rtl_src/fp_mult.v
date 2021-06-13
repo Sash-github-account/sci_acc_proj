@@ -24,14 +24,14 @@ module fp_mult (
    wire [23:0] 				    data_2_mult_in;   
    wire 				    sign_bit;
    wire [8:0] 				    data_exp;
-   wire [5:0] 				    shift_exp_by;
+  wire [5:0] 				    shift_exp_by;
    wire [7:0] 				    exp_final;   
    //______________//
 
    
    
    // iteration variable //
-   integer 				    i;
+   genvar 				    i;
    //______________//
 
 
@@ -51,13 +51,14 @@ module fp_mult (
 
    
    // Multiplier for Manitissa //
+  for(i=0; i<24; i=i+1) begin
    always @( data_1_mult_in or data_2_mult_in ) begin // FULL MULTIPLICATION        
       data_prod_full = 0;
       
-      for(i=0; i<24; i=i+1)
         if( data_1_mult_in[i] == 1'b1 ) data_prod_full = data_prod_full + (data_2_mult_in << i );
       
    end
+  end
    //______________//
 
 

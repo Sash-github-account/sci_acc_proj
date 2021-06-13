@@ -31,7 +31,7 @@ module term_counter(
 
    
    // Capture start and done edges //
-   always@(posedge clk or negedge rst_n) begin
+   always@(posedge clk) begin
       if(rst_n) begin
 	 cntr_en <= 0;
       end
@@ -45,7 +45,7 @@ module term_counter(
    
 
    // Counter logic //
-   always@(posedge clk or negedge rst_n) begin
+   always@(posedge clk ) begin
       if(rst_n) begin
 	 term_cnt <= 0;
       end

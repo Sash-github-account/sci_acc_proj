@@ -39,13 +39,14 @@ module fp_arith (
    wire 				     data_1_exp_greater;
    wire 				     final_data_1_greater;
    wire [4:0] 				     diff_shift_by;
+  wire [1:0] mux_ctrl_bits;
    //_____________________//
 
 
 
    // mantissa extraction //
-   assign data_1_mantissa = {1'b1, data_1[22:0]};
-   assign data_2_mantissa = {1'b1, data_2[22:0]};
+  assign data_1_mantissa = {1'b1, data_1[22:0]};
+  assign data_2_mantissa = {1'b1, data_2[22:0]};
    //_____________________//
 
    
@@ -70,16 +71,17 @@ module fp_arith (
    
    // detection of greater operand //   
    assign final_data_1_greater = (exp_are_equal)? ((data_1_mantissa> data_2_mantissa)? 1'b1 : 1'b0 ) :((data_1_exp_greater)? ((data_1_mantissa > shifted_data)? 1'b1 : 1'b0):((data_2_mantissa > shifted_data)? 1'b0 : 1'b1));
-   assign first_opnd = (exp_are_equal)? ((data_1_mantissa> data_2_mantissa)? data_1_mantissa : data_2_mantissa ) :((data_1_exp_greater)? ((data_1_mantissa > shifted_data)? data_1_mantissa : shifted_data):((data_2_mantissa > shifted_data)? data_2_mantissa : shifted_data));
-   assign second_opnd = (exp_are_equal)? ((data_1_mantissa> data_2_mantissa)? data_2_mantissa : data_1_mantissa ) :((data_1_exp_greater)? ((data_1_mantissa > shifted_data)? shifted_data : data_1_mantissa):((data_2_mantissa > shifted_data)?  shifted_data : data_2_mantissa));
+  assign first_opnd = (exp_are_equal)? ((data_1_mantissa>= data_2_mantissa)? data_1_mantissa : data_2_mantissa ) :((data_1_exp_greater)? ((data_1_mantissa >= shifted_data)? data_1_mantissa : shifted_data):((data_2_mantissa >= shifted_data)? data_2_mantissa : shifted_data));
+  assign second_opnd = (exp_are_equal)? ((data_1_mantissa>= data_2_mantissa)? data_2_mantissa : data_1_mantissa ) :((data_1_exp_greater)? ((data_1_mantissa >= shifted_data)? shifted_data : data_1_mantissa):((data_2_mantissa >= shifted_data)?  shifted_data : data_2_mantissa));
+  assign mux_ctrl_bits = (final_data_1_greater)? {data_1[31],data_2[31]}:{data_1[31],data_2[31]};
    //_____________________//
 
 
    
    // adder and shifter //
    assign temp_sum = first_opnd + second_opnd;
-   assign sum_final_mantissa = temp_sum >> 1;   
-   assign ovrfl_exp_out = exp_out+1 ; 
+  assign sum_final_mantissa = (temp_sum[24])? temp_sum >> 1: temp_sum;   
+  assign ovrfl_exp_out = (temp_sum[24]) ? exp_out+1 : exp_out; 
    //_____________________//
    
 
@@ -99,11 +101,11 @@ module fp_arith (
       data_o  <= ACCUM_INIT;
    
      if(en) begin
-      case ({data_1[31],data_2[31]})
+       case (mux_ctrl_bits)
 	2'b00: begin // Both numbers are positive
       if(~op_sel) begin // ADDITION
 	      data_o[31] <= 1'b0;
-	      data_o[30:23] <= ovrfl_exp_out;
+        data_o[30:23] <= ovrfl_exp_out;
 	      data_o[22:0] <= sum_final_mantissa[22:0];
 	   end
 	   else begin // SUBTRACTION
@@ -115,7 +117,7 @@ module fp_arith (
 
 	2'b01: begin // data_1 is positive and data_2 is negative
       if(~op_sel ) begin // ADDITION
-	      data_o[31] <= final_data_1_greater;
+        data_o[31] <= ~final_data_1_greater;
 	      data_o[30:23] <= diff_exp_out;
 	      data_o[22:0] <= diff_final_mantissa[22:0];
 	   end
@@ -128,7 +130,7 @@ module fp_arith (
 
 	2'b10: begin // data_1 is negative and data_2 is positive
       if(~op_sel ) begin // ADDITION
-	      data_o[31] <= ~final_data_1_greater;	   
+	      data_o[31] <= final_data_1_greater;	   
 	      data_o[30:23] <= diff_exp_out;
 	      data_o[22:0] <= diff_final_mantissa[22:0];
 	   end
